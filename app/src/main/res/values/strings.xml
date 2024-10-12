@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">My Application 1</string>
+    <string name="home">خانه</string>
+    <string name="trending">تست</string>
+    <string name="feed">غذا</string>
+    <string name="splash">اسپلش</string>
+</resources>
