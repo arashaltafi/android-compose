@@ -64,6 +64,9 @@ dependencies {
     //WorkManager Kotlin + coroutines //don't update !!!
     implementation("androidx.work:work-runtime-ktx:2.8.1")
 
+    // Alerter
+    implementation("com.github.akardas16:Alerter:1.0.6")
+
     //RX
     implementation("io.reactivex.rxjava2:rxandroid:2.1.1")
 

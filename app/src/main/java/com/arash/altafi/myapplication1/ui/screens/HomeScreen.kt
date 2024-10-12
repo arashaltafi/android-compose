@@ -1,6 +1,5 @@
 package com.arash.altafi.myapplication1.ui.screens
 
-import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.runtime.Composable
@@ -9,18 +8,19 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.arash.altafi.myapplication1.ui.component.AlerterComponent
 import com.arash.altafi.myapplication1.ui.component.ShowBottomSheet
 import com.arash.altafi.myapplication1.ui.theme.CustomFont
 
 @Composable
 fun HomeScreen() {
     var showBottomSheet by remember { mutableStateOf(false) }
+    var showAlert by remember { mutableStateOf(false) }
 
     Column(
         modifier = Modifier
@@ -45,6 +45,23 @@ fun HomeScreen() {
             Text(
                 text = "show bottomSheet"
             )
+        }
+
+
+        OutlinedButton(
+            modifier = Modifier
+                .padding(top = 22.dp),
+            onClick = {
+                showAlert = true
+            },
+        ) {
+            Text(
+                text = "show alerter"
+            )
+        }
+
+        AlerterComponent(showAlert) {
+            showAlert = false
         }
 
         ShowBottomSheet(showBottomSheet) {
