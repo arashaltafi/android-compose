@@ -4,12 +4,15 @@ import android.widget.Toast
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CutCornerShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Email
 import androidx.compose.material.icons.outlined.Star
@@ -18,8 +21,11 @@ import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.focus.FocusDirection
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
@@ -33,12 +39,12 @@ import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.PlatformImeOptions
-import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import coil3.compose.AsyncImage
 import com.arash.altafi.myapplication1.R
 import com.arash.altafi.myapplication1.ui.theme.MyApplication1Theme
 
@@ -49,6 +55,7 @@ fun Test() {
     var count2 by rememberSaveable { mutableIntStateOf(0) }
     var password by remember { mutableStateOf("") }
     var email by remember { mutableStateOf("") }
+    val state = rememberScrollState()
 
     val keyboardController = LocalSoftwareKeyboardController.current
     val focusManager = LocalFocusManager.current
@@ -62,7 +69,8 @@ fun Test() {
                 modifier = Modifier
                     .fillMaxSize()
                     .background(Color.Red)
-                    .padding(innerPadding),
+                    .padding(innerPadding)
+                    .verticalScroll(state),
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally,
             ) {
@@ -230,13 +238,73 @@ fun Test() {
                     ),
                     keyboardActions = KeyboardActions(
                         onDone = {
-                            Toast.makeText(context, "password: $password", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(context, "password: $password", Toast.LENGTH_SHORT)
+                                .show()
                             password = ""
                             keyboardController?.hide()
                             focusManager.clearFocus()
                         }
                     )
                 )
+
+                AsyncImage(
+                    model = "https://arashaltafi.ir/Social_Media/story-04.jpg",
+                    contentDescription = null,
+                    modifier = Modifier
+                        .padding(top = 20.dp)
+                        .width(250.dp)
+                        .height(250.dp)
+                        .clip(RoundedCornerShape(topEnd = 50.dp))
+                        .shadow(10.dp)
+                        .border(1.dp, Color.Blue, RoundedCornerShape(topEnd = 50.dp)),
+                    contentScale = ContentScale.None,
+                )
+
+                AsyncImage(
+                    model = "https://arashaltafi.ir/Social_Media/story-04.jpg",
+                    contentDescription = null,
+                    modifier = Modifier
+                        .padding(top = 20.dp)
+                        .width(250.dp)
+                        .height(250.dp)
+                        .clickable {
+                            Toast
+                                .makeText(context, "Click", Toast.LENGTH_SHORT)
+                                .show()
+                        }
+                        .clip(CircleShape)
+                        .shadow(10.dp)
+                        .border(1.dp, Color.Blue, CircleShape),
+                    contentScale = ContentScale.Crop,
+                )
+
+                Card(
+                    modifier = Modifier
+                        .padding(top = 20.dp, bottom = 20.dp)
+                        .width(250.dp)
+                        .height(250.dp)
+                        .clickable {
+                            Toast
+                                .makeText(context, "Click", Toast.LENGTH_SHORT)
+                                .show()
+                        }
+                        .shadow(10.dp, RoundedCornerShape(20.dp))
+                        .shadow(2.dp)
+                        .border(2.dp, Color.Gray, RoundedCornerShape(20.dp)),
+                    shape = RoundedCornerShape(20.dp),
+                    elevation = CardDefaults.cardElevation(
+                        defaultElevation = 10.dp,
+                        pressedElevation = 20.dp,
+                        focusedElevation = 20.dp,
+                        hoveredElevation = 20.dp,
+                        disabledElevation = 0.dp
+                    )
+                ) {
+                    Text(
+                        text = "Card",
+                        modifier = Modifier
+                    )
+                }
             }
         }
     }
