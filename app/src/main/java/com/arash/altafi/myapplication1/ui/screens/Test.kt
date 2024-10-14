@@ -1,11 +1,18 @@
 package com.arash.altafi.myapplication1.ui.screens
 
+import android.widget.GridLayout
 import android.widget.Toast
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.gestures.Orientation
+import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CutCornerShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -49,7 +56,7 @@ import com.arash.altafi.myapplication1.R
 import com.arash.altafi.myapplication1.ui.theme.MyApplication1Theme
 
 @Composable
-fun Test() {
+fun Test2() {
     val context = LocalContext.current
     var count1 by remember { mutableIntStateOf(0) }
     var count2 by rememberSaveable { mutableIntStateOf(0) }
@@ -307,6 +314,234 @@ fun Test() {
                 }
             }
         }
+    }
+}
+
+@Composable
+fun Test3() {
+    val languages: List<String> = listOf(
+        "Java",
+        "Kotlin",
+        "C++",
+        "Python",
+        "Swift",
+        "JavaScript",
+        "Rust",
+        "Dart",
+        "Go",
+        "PHP",
+        "Ruby",
+        "C#",
+        "C",
+        "R",
+    )
+
+    MyApplication1Theme {
+        Scaffold(
+            modifier = Modifier
+                .fillMaxSize(),
+        ) { innerPadding ->
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(innerPadding),
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally,
+            ) {
+                LazyRow(
+                    modifier = Modifier
+                        .padding(innerPadding)
+                        .padding(top = 8.dp)
+                ) {
+                    items(languages.size) {
+                        RowItem(text = languages[it], false)
+                    }
+                }
+
+                LazyColumn(
+                    modifier = Modifier
+                        .padding(top = 8.dp)
+                ) {
+                    items(languages.size) {
+                        RowItem(text = languages[it], true)
+                    }
+                }
+            }
+        }
+    }
+}
+
+@Composable
+fun Test4() {
+    val context = LocalContext.current
+
+    val names = arrayOf(
+        "arash",
+        "alireza",
+        "mamad",
+        "ali",
+        "reza",
+        "mohsen",
+    )
+
+    val images = arrayOf(
+        "https://arashaltafi.ir/Social_Media/story-01.jpg",
+        "https://arashaltafi.ir/Social_Media/story-02.jpg",
+        "https://arashaltafi.ir/Social_Media/story-03.jpg",
+        "https://arashaltafi.ir/Social_Media/story-04.jpg",
+        "https://arashaltafi.ir/Social_Media/story-05.jpg",
+        "https://arashaltafi.ir/Social_Media/story-016.jpg",
+    )
+
+    val sentences = arrayOf(
+        "lorem ipsum dolor sit amet",
+        "consectetur adipiscing elit",
+        "sed do eiusmod tempor incididunt",
+        "ut labore et dolore magna aliqua",
+        "ut enim ad minim veniam",
+        "quis nostrud exercitation ullamco laboris",
+    )
+
+    MyApplication1Theme {
+        Scaffold(
+            modifier = Modifier
+                .fillMaxSize(),
+        ) { innerPadding ->
+            LazyColumn(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(innerPadding),
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally,
+                contentPadding = PaddingValues(16.dp)
+            ) {
+                items(names.size) {
+                    Card(
+                        modifier = Modifier
+                            .wrapContentSize()
+                            .padding(10.dp),
+                        colors = CardDefaults.cardColors(
+                            containerColor = Color.White
+                        ),
+                        elevation = CardDefaults.cardElevation(
+                            defaultElevation = 10.dp
+                        ),
+                        onClick = {
+                            Toast.makeText(context, names[it], Toast.LENGTH_SHORT).show()
+                        }
+                    ) {
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth(),
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.spacedBy(15.dp)
+                        ) {
+                            AsyncImage(
+                                model = images[it],
+                                contentDescription = names[it],
+                                modifier = Modifier
+                                    .padding(12.dp)
+                                    .size(100.dp)
+                                    .clip(CircleShape)
+                                    .shadow(10.dp)
+                                    .background(Color.Red)
+                                    .border(1.dp, Color.Blue, CircleShape),
+                                contentScale = ContentScale.Crop,
+                            )
+                            Column(
+                                modifier = Modifier
+                                    .padding(12.dp)
+                                    .fillMaxHeight(),
+                                horizontalAlignment = Alignment.End
+                            ) {
+                                Text(
+                                    text = names[it],
+                                    fontSize = 24.sp,
+                                    fontWeight = FontWeight.Bold,
+                                    maxLines = 1,
+                                    overflow = TextOverflow.Ellipsis
+                                )
+                                Text(
+                                    text = sentences[it],
+                                    fontSize = 18.sp,
+                                    fontWeight = FontWeight.Normal,
+                                    maxLines = 2,
+                                    overflow = TextOverflow.Ellipsis
+                                )
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+    }
+}
+
+@Composable
+fun Test() {
+    MyApplication1Theme {
+        Scaffold(
+            modifier = Modifier
+                .fillMaxSize(),
+        ) { innerPadding ->
+            LazyVerticalGrid(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(innerPadding),
+                columns = GridCells.Fixed(3),
+                contentPadding = PaddingValues(16.dp)
+            ) {
+                items(12) {
+                    RowItem("Item $it", true)
+                }
+            }
+        }
+    }
+}
+
+@Composable
+fun RowItem(text: String, isColumn: Boolean) {
+    val context = LocalContext.current
+
+    val modifier = if (isColumn) {
+        Modifier
+            .fillMaxWidth()
+            .padding(10.dp, 6.dp)
+    } else {
+        Modifier
+            .padding(8.dp, 2.dp)
+    }
+
+    Card(
+        modifier = modifier,
+        onClick = {
+            Toast.makeText(context, text, Toast.LENGTH_SHORT).show()
+        },
+        elevation = CardDefaults.cardElevation(
+            defaultElevation = 10.dp,
+            pressedElevation = 20.dp,
+            focusedElevation = 20.dp,
+            hoveredElevation = 20.dp,
+            disabledElevation = 0.dp
+        ),
+        colors = CardDefaults.cardColors(
+            containerColor = Color(
+                (0..255).random(),
+                (0..255).random(),
+                (0..255).random(),
+            )
+        )
+    ) {
+        Text(
+            text = text,
+            fontSize = 20.sp,
+            color = Color.Black,
+            fontWeight = FontWeight.Medium,
+            modifier = Modifier
+                .align(Alignment.CenterHorizontally)
+                .padding(18.dp, 12.dp)
+        )
     }
 }
 
