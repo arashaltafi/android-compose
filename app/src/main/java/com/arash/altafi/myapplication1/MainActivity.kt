@@ -20,9 +20,9 @@ class MainActivity : ComponentActivity() {
         LocaleUtils.setLocale(this)
         enableEdgeToEdge()
         setContent {
-            Test()
+//            Test()
 //            ResponsiveScreen()
-//            AppNavigation()
+            AppNavigation()
         }
     }
 

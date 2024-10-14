@@ -9,24 +9,28 @@ import androidx.compose.ui.graphics.vector.ImageVector
 data class BottomNavigationItem(
     val label: String = "",
     val icon: ImageVector = Icons.Filled.Home,
-    val route: String = ""
+    val route: String = "",
+    val badgeCount: Int = 0,
 ) {
     fun bottomNavigationItems(): List<BottomNavigationItem> {
         return listOf(
             BottomNavigationItem(
                 label = "home",
                 icon = Icons.Filled.Home,
-                route = Screens.Home.route
+                route = Screens.Home.route,
+                badgeCount = 4
             ),
             BottomNavigationItem(
                 label = "search",
                 icon = Icons.Filled.Search,
-                route = Screens.Search.route
+                route = Screens.Search.route,
+                badgeCount = 0
             ),
             BottomNavigationItem(
                 label = "profile",
                 icon = Icons.Filled.AccountCircle,
-                route = Screens.Profile.route
+                route = Screens.Profile.route,
+                badgeCount = 0
             ),
         )
     }
