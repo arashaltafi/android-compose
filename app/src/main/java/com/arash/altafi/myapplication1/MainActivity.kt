@@ -7,6 +7,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import com.arash.altafi.myapplication1.ui.navigation.AppNavigation
+import com.arash.altafi.myapplication1.ui.screens.ResponsiveScreen
 import com.arash.altafi.myapplication1.ui.screens.Test
 import com.arash.altafi.myapplication1.utils.language.LocaleUtils
 import dagger.hilt.android.AndroidEntryPoint
@@ -19,7 +20,8 @@ class MainActivity : ComponentActivity() {
         LocaleUtils.setLocale(this)
         enableEdgeToEdge()
         setContent {
-            Test()
+//            Test()
+            ResponsiveScreen()
 //            AppNavigation()
         }
     }
