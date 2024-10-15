@@ -64,6 +64,7 @@ import com.arash.altafi.myapplication1.ui.component.BackPressHandler
 import com.arash.altafi.myapplication1.ui.screens.HomeScreen
 import com.arash.altafi.myapplication1.ui.screens.ResponsiveScreen
 import com.arash.altafi.myapplication1.ui.screens.SplashScreen
+import com.arash.altafi.myapplication1.ui.screens.TabLayoutScreen
 import com.arash.altafi.myapplication1.ui.screens.Test
 import com.arash.altafi.myapplication1.ui.screens.UserDetailScreen
 import com.arash.altafi.myapplication1.ui.screens.UserListScreen
@@ -306,7 +307,10 @@ fun AppNavigation() {
                         HomeScreen()
                     }
                     composable("search") {
-                        ResponsiveScreen()
+                        ResponsiveScreen(navController)
+                    }
+                    composable("tabLayout") {
+                        TabLayoutScreen()
                     }
                     composable(
                         "profile",

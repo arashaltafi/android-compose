@@ -99,6 +99,7 @@ dependencies {
     // Material
     implementation("androidx.compose.material:material:1.7.3")
     implementation("androidx.compose.ui:ui:1.7.3")
+    implementation("androidx.compose.material:material-icons-extended-android:1.7.3")
 
     // BottomNavigation
     implementation("com.github.PratikFagadiya:AnimatedSmoothBottomNavigation-JetpackCompose:1.1.2")
