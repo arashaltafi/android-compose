@@ -1,17 +1,14 @@
 package com.arash.altafi.myapplication1.ui.navigation
 
 import android.app.Activity
-import android.util.Log
 import android.widget.Toast
 import androidx.compose.animation.AnimatedContentTransitionScope
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.spring
 import androidx.compose.animation.core.tween
-import androidx.compose.foundation.background
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.ArrowBack
@@ -40,7 +37,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.unit.dp
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -48,6 +44,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.arash.altafi.myapplication1.ui.component.BackPressHandler
 import com.arash.altafi.myapplication1.ui.screens.HomeScreen
+import com.arash.altafi.myapplication1.ui.screens.ResponsiveScreen
 import com.arash.altafi.myapplication1.ui.screens.SplashScreen
 import com.arash.altafi.myapplication1.ui.screens.UserDetailScreen
 import com.arash.altafi.myapplication1.ui.screens.UserListScreen
@@ -61,9 +58,9 @@ import kotlinx.coroutines.launch
 fun AppNavigation() {
     val navController = rememberNavController()
 
-    var fabVisible by remember { mutableStateOf(true) }
+    val fabVisible by remember { mutableStateOf(true) }
 
-    var darkTheme: Boolean = isSystemInDarkTheme()
+    val darkTheme: Boolean = isSystemInDarkTheme()
     var isDarkTheme by rememberSaveable { mutableStateOf(darkTheme) }
 
     val context = LocalContext.current
@@ -75,6 +72,7 @@ fun AppNavigation() {
     val currentBackStackEntry by navController.currentBackStackEntryAsState()
     val currentDestination = currentBackStackEntry?.destination?.route
     val isSplashScreen = currentDestination == "splash"
+    val isHomeScreen = currentDestination == "home"
 
     MyApplication1Theme(
         darkTheme = isDarkTheme
@@ -88,56 +86,46 @@ fun AppNavigation() {
                     TopAppBar(
                         title = { Text("اپلیکیشن اندروید") },
                         navigationIcon = {
-                            IconButton(
-                                modifier = Modifier
-                                    .padding(top = 22.dp)
-                                    .background(
-                                        Color.Red,
-                                        shape = RoundedCornerShape(15.dp, 15.dp, 15.dp, 15.dp)
-                                    ),
-                                onClick = {
-                                    if (navController.previousBackStackEntry != null) {
-                                        // Pop the backstack if there is a previous route
-                                        navController.popBackStack()
-                                        navigationSelectedItem = 0
-                                    } else {
-                                        // Handle double back press to exit the app
-                                        if (doubleBackToExitPressedOnce) {
-                                            // Exit the app if back is pressed twice within 5 seconds
-                                            activity?.finish()
+                            if (!isHomeScreen) {
+                                IconButton(
+                                    onClick = {
+                                        if (navController.previousBackStackEntry != null) {
+                                            // Pop the backstack if there is a previous route
+                                            navController.popBackStack()
+                                            navigationSelectedItem = 0
                                         } else {
-                                            // Show the toast message and start a 5-second timer
-                                            doubleBackToExitPressedOnce = true
-                                            Toast.makeText(
-                                                context,
-                                                "برای خروج یک بار دیگر دکمه برگشت را بزنید",
-                                                Toast.LENGTH_SHORT
-                                            ).show()
+                                            // Handle double back press to exit the app
+                                            if (doubleBackToExitPressedOnce) {
+                                                // Exit the app if back is pressed twice within 5 seconds
+                                                activity?.finish()
+                                            } else {
+                                                // Show the toast message and start a 5-second timer
+                                                doubleBackToExitPressedOnce = true
+                                                Toast.makeText(
+                                                    context,
+                                                    "برای خروج یک بار دیگر دکمه برگشت را بزنید",
+                                                    Toast.LENGTH_SHORT
+                                                ).show()
 
-                                            // Reset the flag after 5 seconds using coroutine
-                                            CoroutineScope(Dispatchers.Main).launch {
-                                                delay(5000)  // 5-second delay
-                                                doubleBackToExitPressedOnce = false
+                                                // Reset the flag after 5 seconds using coroutine
+                                                CoroutineScope(Dispatchers.Main).launch {
+                                                    delay(5000)  // 5-second delay
+                                                    doubleBackToExitPressedOnce = false
+                                                }
                                             }
                                         }
-                                    }
-                                },
-                            ) {
-                                Icon(
-                                    imageVector = Icons.Filled.ArrowBack,
-                                    contentDescription = "Back",
-                                    tint = Color.Cyan
-                                )
+                                    },
+                                ) {
+                                    Icon(
+                                        imageVector = Icons.Filled.ArrowBack,
+                                        contentDescription = "Back",
+                                        tint = Color.Cyan
+                                    )
+                                }
                             }
                         },
                         actions = {
                             IconButton(
-                                modifier = Modifier
-                                    .padding(top = 22.dp)
-                                    .background(
-                                        Color.Red,
-                                        shape = RoundedCornerShape(15.dp, 15.dp, 15.dp, 15.dp)
-                                    ),
                                 onClick = {
                                     isDarkTheme = !isDarkTheme
                                 }
@@ -218,7 +206,7 @@ fun AppNavigation() {
         ) { innerPadding ->
             NavHost(
                 navController = navController,
-                startDestination = "splash",
+                startDestination = "home",
                 modifier = Modifier.padding(innerPadding)
             ) {
                 composable("splash") {
@@ -228,7 +216,7 @@ fun AppNavigation() {
                     HomeScreen()
                 }
                 composable("search") {
-                    SplashScreen(navController)
+                    ResponsiveScreen()
                 }
                 composable(
                     "profile",
