@@ -48,6 +48,7 @@ import com.arash.altafi.myapplication1.ui.component.BackPressHandler
 import com.arash.altafi.myapplication1.ui.screens.HomeScreen
 import com.arash.altafi.myapplication1.ui.screens.ResponsiveScreen
 import com.arash.altafi.myapplication1.ui.screens.SplashScreen
+import com.arash.altafi.myapplication1.ui.screens.Test
 import com.arash.altafi.myapplication1.ui.screens.UserDetailScreen
 import com.arash.altafi.myapplication1.ui.screens.UserListScreen
 import com.arash.altafi.myapplication1.ui.theme.MyApplication1Theme
@@ -75,7 +76,7 @@ fun AppNavigation() {
     val currentDestination = currentBackStackEntry?.destination?.route
     val isSplashScreen = currentDestination == "splash"
     val isHomeScreen = currentDestination == "home"
-    val allowBottomBar = arrayOf("home", "search", "profile")
+    val allowBottomBar = arrayOf("home", "search", "profile", "test")
 
     MyApplication1Theme(
         darkTheme = isDarkTheme
@@ -214,6 +215,9 @@ fun AppNavigation() {
                 startDestination = "home",
                 modifier = Modifier.padding(innerPadding)
             ) {
+                composable("test") {
+                    Test()
+                }
                 composable("splash") {
                     SplashScreen(navController)
                 }

@@ -507,7 +507,6 @@ fun Test() {
     val keyboardController = LocalSoftwareKeyboardController.current
     val focusManager = LocalFocusManager.current
     var checkBox by remember { mutableStateOf(false) }
-    var switch by remember { mutableStateOf(false) }
     var radioButton by remember { mutableStateOf(false) }
 
 
