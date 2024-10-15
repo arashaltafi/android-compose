@@ -73,6 +73,7 @@ fun AppNavigation() {
     val currentDestination = currentBackStackEntry?.destination?.route
     val isSplashScreen = currentDestination == "splash"
     val isHomeScreen = currentDestination == "home"
+    val allowBottomBar = arrayOf("home", "search", "profile")
 
     MyApplication1Theme(
         darkTheme = isDarkTheme
@@ -89,7 +90,9 @@ fun AppNavigation() {
                             if (!isHomeScreen) {
                                 IconButton(
                                     onClick = {
-                                        if (navController.previousBackStackEntry != null) {
+                                        if (currentDestination !in allowBottomBar) {
+                                            navController.popBackStack()
+                                        } else if (navController.previousBackStackEntry != null) {
                                             // Pop the backstack if there is a previous route
                                             navController.popBackStack()
                                             navigationSelectedItem = 0
@@ -145,7 +148,7 @@ fun AppNavigation() {
                 }
             },
             bottomBar = {
-                if (!isSplashScreen) {
+                if (currentDestination in allowBottomBar) {
                     NavigationBar {
                         //getting the list of bottom navigation items for our data class
                         BottomNavigationItem().bottomNavigationItems()
@@ -240,7 +243,8 @@ fun AppNavigation() {
             }
 
             BackPressHandler(navController) { newItem ->
-                navigationSelectedItem = newItem
+                if (currentDestination in allowBottomBar)
+                    navigationSelectedItem = newItem
             }
         }
     }
