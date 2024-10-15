@@ -37,11 +37,13 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.arash.altafi.myapplication1.R
 import com.arash.altafi.myapplication1.ui.component.BackPressHandler
 import com.arash.altafi.myapplication1.ui.screens.HomeScreen
 import com.arash.altafi.myapplication1.ui.screens.ResponsiveScreen
@@ -85,7 +87,7 @@ fun AppNavigation() {
                 if (!isSplashScreen) {
                     @OptIn(ExperimentalMaterial3Api::class)
                     TopAppBar(
-                        title = { Text("اپلیکیشن اندروید") },
+                        title = { Text("اپلیکیشن تست") },
                         navigationIcon = {
                             if (!isHomeScreen) {
                                 IconButton(
@@ -120,7 +122,7 @@ fun AppNavigation() {
                                     },
                                 ) {
                                     Icon(
-                                        imageVector = Icons.Filled.ArrowBack,
+                                        painter = painterResource(id = R.drawable.round_arrow_back_24),
                                         contentDescription = "Back",
                                         tint = Color.Cyan
                                     )
@@ -134,7 +136,7 @@ fun AppNavigation() {
                                 }
                             ) {
                                 Icon(
-                                    imageVector = if (isDarkTheme) Icons.Filled.Add else Icons.Filled.Star,
+                                    painter = painterResource(id = if (isDarkTheme) R.drawable.round_light_mode_24 else R.drawable.round_dark_mode_24),
                                     contentDescription = if (isDarkTheme) "Switch to Light Theme" else "Switch to Dark Theme",
                                     tint = Color.White
                                 )
