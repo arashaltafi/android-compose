@@ -37,7 +37,6 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
@@ -49,10 +48,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.NavHost
@@ -61,6 +58,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.arash.altafi.myapplication1.R
 import com.arash.altafi.myapplication1.ui.component.BackPressHandler
+import com.arash.altafi.myapplication1.ui.component.ImageSliderScreen
 import com.arash.altafi.myapplication1.ui.screens.HomeScreen
 import com.arash.altafi.myapplication1.ui.screens.ResponsiveScreen
 import com.arash.altafi.myapplication1.ui.screens.SplashScreen
@@ -306,11 +304,14 @@ fun AppNavigation() {
                     composable("home") {
                         HomeScreen()
                     }
+                    composable("slider") {
+                        ImageSliderScreen()
+                    }
                     composable("search") {
                         ResponsiveScreen(navController)
                     }
                     composable("tabLayout") {
-                        TabLayoutScreen()
+                        TabLayoutScreen(navController)
                     }
                     composable(
                         "profile",

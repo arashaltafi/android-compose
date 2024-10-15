@@ -54,7 +54,7 @@ fun ResponsiveScreenPortrait(navController: NavController) {
     ) {
         Button(
             onClick = {
-                navController.navigate("navController")
+                navController.navigate("tabLayout")
             }
         ) {
             Text("Navigate To TabLayout")
