@@ -7,37 +7,53 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.spring
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material.icons.filled.Star
+import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material3.Badge
 import androidx.compose.material3.BadgedBox
+import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FabPosition
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.ModalDrawerSheet
+import androidx.compose.material3.ModalNavigationDrawer
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
+import androidx.compose.material3.NavigationDrawerItem
+import androidx.compose.material3.NavigationDrawerItemDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalLayoutDirection
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.unit.LayoutDirection
+import androidx.compose.ui.unit.dp
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -52,8 +68,6 @@ import com.arash.altafi.myapplication1.ui.screens.Test
 import com.arash.altafi.myapplication1.ui.screens.UserDetailScreen
 import com.arash.altafi.myapplication1.ui.screens.UserListScreen
 import com.arash.altafi.myapplication1.ui.theme.MyApplication1Theme
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -71,6 +85,10 @@ fun AppNavigation() {
 
     var doubleBackToExitPressedOnce by remember { mutableStateOf(false) }
     var navigationSelectedItem by remember { mutableIntStateOf(0) }
+    val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
+    var selectedItemIndex by rememberSaveable { mutableIntStateOf(0) }
+
+    val coroutineScope = rememberCoroutineScope()
 
     val currentBackStackEntry by navController.currentBackStackEntryAsState()
     val currentDestination = currentBackStackEntry?.destination?.route
@@ -81,176 +99,240 @@ fun AppNavigation() {
     MyApplication1Theme(
         darkTheme = isDarkTheme
     ) {
-        Scaffold(
-            modifier = Modifier
-                .fillMaxSize(),
-            topBar = {
-                if (!isSplashScreen) {
-                    @OptIn(ExperimentalMaterial3Api::class)
-                    TopAppBar(
-                        title = { Text("اپلیکیشن تست") },
-                        navigationIcon = {
-                            if (!isHomeScreen) {
-                                IconButton(
-                                    onClick = {
-                                        if (currentDestination !in allowBottomBar) {
-                                            navController.popBackStack()
-                                        } else if (navController.previousBackStackEntry != null) {
-                                            // Pop the backstack if there is a previous route
-                                            navController.popBackStack()
-                                            navigationSelectedItem = 0
-                                        } else {
-                                            // Handle double back press to exit the app
-                                            if (doubleBackToExitPressedOnce) {
-                                                // Exit the app if back is pressed twice within 5 seconds
-                                                activity?.finish()
-                                            } else {
-                                                // Show the toast message and start a 5-second timer
-                                                doubleBackToExitPressedOnce = true
-                                                Toast.makeText(
-                                                    context,
-                                                    "برای خروج یک بار دیگر دکمه برگشت را بزنید",
-                                                    Toast.LENGTH_SHORT
-                                                ).show()
-
-                                                // Reset the flag after 5 seconds using coroutine
-                                                CoroutineScope(Dispatchers.Main).launch {
-                                                    delay(5000)  // 5-second delay
-                                                    doubleBackToExitPressedOnce = false
-                                                }
-                                            }
-                                        }
-                                    },
-                                ) {
-                                    Icon(
-                                        painter = painterResource(id = R.drawable.round_arrow_back_24),
-                                        contentDescription = "Back",
-                                        tint = Color.Cyan
-                                    )
-                                }
-                            }
-                        },
-                        actions = {
-                            IconButton(
-                                onClick = {
-                                    isDarkTheme = !isDarkTheme
-                                }
-                            ) {
+        ModalNavigationDrawer(
+            gesturesEnabled = true,
+            drawerContent = {
+                ModalDrawerSheet(
+                    drawerContainerColor = colorResource(R.color.gray_200),
+                    drawerContentColor = colorResource(R.color.white),
+                    drawerShape = RoundedCornerShape(topEnd = 50.dp, bottomEnd = 50.dp),
+                ) {
+                    Spacer(Modifier.height(16.dp))
+                    bottomNavigationItems().forEachIndexed { index, item ->
+                        NavigationDrawerItem(
+                            modifier = Modifier
+                                .padding(NavigationDrawerItemDefaults.ItemPadding),
+                            label = { Text(item.label) },
+                            selected = index == selectedItemIndex,
+                            icon = {
                                 Icon(
-                                    painter = painterResource(id = if (isDarkTheme) R.drawable.round_light_mode_24 else R.drawable.round_dark_mode_24),
-                                    contentDescription = if (isDarkTheme) "Switch to Light Theme" else "Switch to Dark Theme",
-                                    tint = Color.White
+                                    painter = painterResource(id = item.icon),
+                                    contentDescription = item.label
                                 )
+                            },
+                            badge = {
+                                if (item.badgeCount > 0) {
+                                    Badge {
+                                        Text(item.badgeCount.toString())
+                                    }
+                                } else {
+                                    Badge()
+                                }
+                            },
+                            onClick = {
+                                navController.navigate(item.label)
+                                selectedItemIndex = index
+                                coroutineScope.launch {
+                                    drawerState.close()
+                                }
                             }
-                        },
-                        colors = TopAppBarDefaults.topAppBarColors(
-                            containerColor = MaterialTheme.colorScheme.primary,
-                            titleContentColor = Color.White,
                         )
-                    )
+                    }
                 }
             },
-            bottomBar = {
-                if (currentDestination in allowBottomBar) {
-                    NavigationBar {
-                        //getting the list of bottom navigation items for our data class
-                        BottomNavigationItem().bottomNavigationItems()
-                            .forEachIndexed { index, navigationItem ->
-
-                                //iterating all items with their respective indexes
-                                NavigationBarItem(
-                                    selected = index == navigationSelectedItem,
-                                    label = {
-                                        Text(navigationItem.label)
-                                    },
-                                    icon = {
-                                        BadgedBox(
-                                            badge = {
-                                                if (navigationItem.badgeCount != 0) {
-                                                    Badge {
-                                                        Text(text = navigationItem.badgeCount.toString())
-                                                    }
+            drawerState = drawerState,
+        ) {
+            Scaffold(
+                modifier = Modifier
+                    .fillMaxSize(),
+                topBar = {
+                    if (!isSplashScreen) {
+                        @OptIn(ExperimentalMaterial3Api::class)
+                        TopAppBar(
+                            title = {
+                                Text("اپلیکیشن تست")
+                            },
+                            navigationIcon = {
+                                Row {
+                                    IconButton(
+                                        onClick = {
+                                            coroutineScope.launch {
+                                                drawerState.open()
+                                            }
+                                        }
+                                    ) {
+                                        Icon(
+                                            imageVector = Icons.Filled.Menu,
+                                            contentDescription = "Menu",
+                                            tint = Color.White
+                                        )
+                                    }
+                                }
+                            },
+                            actions = {
+                                Row {
+                                    IconButton(
+                                        onClick = {
+                                            isDarkTheme = !isDarkTheme
+                                        }
+                                    ) {
+                                        Icon(
+                                            painter = painterResource(id = if (isDarkTheme) R.drawable.round_light_mode_24 else R.drawable.round_dark_mode_24),
+                                            contentDescription = if (isDarkTheme) "Switch to Light Theme" else "Switch to Dark Theme",
+                                            tint = Color.White
+                                        )
+                                    }
+                                    if (!isHomeScreen) {
+                                        IconButton(
+                                            onClick = {
+                                                if (currentDestination !in allowBottomBar) {
+                                                    navController.popBackStack()
+                                                } else if (navController.previousBackStackEntry != null) {
+                                                    // Pop the backstack if there is a previous route
+                                                    navController.popBackStack()
+                                                    navigationSelectedItem = 0
                                                 } else {
-                                                    Badge()
+                                                    // Handle double back press to exit the app
+                                                    if (doubleBackToExitPressedOnce) {
+                                                        // Exit the app if back is pressed twice within 5 seconds
+                                                        activity?.finish()
+                                                    } else {
+                                                        // Show the toast message and start a 5-second timer
+                                                        doubleBackToExitPressedOnce = true
+                                                        Toast.makeText(
+                                                            context,
+                                                            "برای خروج یک بار دیگر دکمه برگشت را بزنید",
+                                                            Toast.LENGTH_SHORT
+                                                        ).show()
+
+                                                        // Reset the flag after 5 seconds using coroutine
+                                                        coroutineScope.launch {
+                                                            delay(5000)  // 5-second delay
+                                                            doubleBackToExitPressedOnce = false
+                                                        }
+                                                    }
                                                 }
                                             },
                                         ) {
                                             Icon(
-                                                navigationItem.icon,
-                                                contentDescription = navigationItem.label
+                                                modifier = Modifier.rotate(180f),
+                                                painter = painterResource(id = R.drawable.round_arrow_back_24),
+                                                contentDescription = "Back",
+                                                tint = Color.White
                                             )
                                         }
-                                    },
-                                    onClick = {
-                                        navigationSelectedItem = index
-                                        navController.navigate(navigationItem.route) {
-                                            popUpTo(navController.graph.findStartDestination().id) {
-                                                saveState = true
-                                            }
-                                            launchSingleTop = true
-                                            restoreState = true
-                                        }
                                     }
-                                )
-                            }
-                    }
-                }
-            },
-            floatingActionButton = {
-                AnimatedVisibility(visible = fabVisible && !isSplashScreen) {
-                    FloatingActionButton(
-                        onClick = {
-                            Toast.makeText(context, "FAB clicked", Toast.LENGTH_SHORT).show()
-                        },
-                        containerColor = MaterialTheme.colorScheme.secondary
-                    ) {
-                        Icon(Icons.Filled.Add, contentDescription = "Add")
-                    }
-                }
-            },
-            floatingActionButtonPosition = FabPosition.End,
-        ) { innerPadding ->
-            NavHost(
-                navController = navController,
-                startDestination = "home",
-                modifier = Modifier.padding(innerPadding)
-            ) {
-                composable("test") {
-                    Test()
-                }
-                composable("splash") {
-                    SplashScreen(navController)
-                }
-                composable("home") {
-                    HomeScreen()
-                }
-                composable("search") {
-                    ResponsiveScreen()
-                }
-                composable(
-                    "profile",
-                    enterTransition = {
-                        return@composable slideIntoContainer(
-                            AnimatedContentTransitionScope.SlideDirection.Start, tween(700)
+                                }
+                            },
+                            colors = TopAppBarDefaults.topAppBarColors(
+                                containerColor = MaterialTheme.colorScheme.primary,
+                                titleContentColor = Color.White,
+                            )
                         )
-                    },
-                    popExitTransition = {
-                        return@composable slideOutOfContainer(
-                            AnimatedContentTransitionScope.SlideDirection.End, spring(1f)
-                        )
-                    },
-                ) {
-                    UserListScreen(navController)
-                }
-                composable("userDetail/{userId}") { backStackEntry ->
-                    val userId = backStackEntry.arguments?.getString("userId")?.toInt() ?: 0
-                    UserDetailScreen(userId)
-                }
-            }
+                    }
+                },
+                bottomBar = {
+                    if (currentDestination in allowBottomBar) {
+                        NavigationBar {
+                            //getting the list of bottom navigation items for our data class
+                            BottomNavigationItem().bottomNavigationItems()
+                                .forEachIndexed { index, navigationItem ->
 
-            BackPressHandler(navController) { newItem ->
-                if (currentDestination in allowBottomBar)
-                    navigationSelectedItem = newItem
+                                    //iterating all items with their respective indexes
+                                    NavigationBarItem(
+                                        selected = index == navigationSelectedItem,
+                                        label = {
+                                            Text(navigationItem.label)
+                                        },
+                                        icon = {
+                                            BadgedBox(
+                                                badge = {
+                                                    if (navigationItem.badgeCount != 0) {
+                                                        Badge {
+                                                            Text(text = navigationItem.badgeCount.toString())
+                                                        }
+                                                    } else {
+                                                        Badge()
+                                                    }
+                                                },
+                                            ) {
+                                                Icon(
+                                                    navigationItem.icon,
+                                                    contentDescription = navigationItem.label
+                                                )
+                                            }
+                                        },
+                                        onClick = {
+                                            navigationSelectedItem = index
+                                            navController.navigate(navigationItem.route) {
+                                                popUpTo(navController.graph.findStartDestination().id) {
+                                                    saveState = true
+                                                }
+                                                launchSingleTop = true
+                                                restoreState = true
+                                            }
+                                        }
+                                    )
+                                }
+                        }
+                    }
+                },
+                floatingActionButton = {
+                    AnimatedVisibility(visible = fabVisible && !isSplashScreen) {
+                        FloatingActionButton(
+                            onClick = {
+                                Toast.makeText(context, "FAB clicked", Toast.LENGTH_SHORT).show()
+                            },
+                            containerColor = MaterialTheme.colorScheme.secondary
+                        ) {
+                            Icon(Icons.Filled.Add, contentDescription = "Add")
+                        }
+                    }
+                },
+                floatingActionButtonPosition = FabPosition.End,
+            ) { innerPadding ->
+                NavHost(
+                    navController = navController,
+                    startDestination = "home",
+                    modifier = Modifier.padding(innerPadding)
+                ) {
+                    composable("test") {
+                        Test()
+                    }
+                    composable("splash") {
+                        SplashScreen(navController)
+                    }
+                    composable("home") {
+                        HomeScreen()
+                    }
+                    composable("search") {
+                        ResponsiveScreen()
+                    }
+                    composable(
+                        "profile",
+                        enterTransition = {
+                            return@composable slideIntoContainer(
+                                AnimatedContentTransitionScope.SlideDirection.Start, tween(700)
+                            )
+                        },
+                        popExitTransition = {
+                            return@composable slideOutOfContainer(
+                                AnimatedContentTransitionScope.SlideDirection.End, spring(1f)
+                            )
+                        },
+                    ) {
+                        UserListScreen(navController)
+                    }
+                    composable("userDetail/{userId}") { backStackEntry ->
+                        val userId = backStackEntry.arguments?.getString("userId")?.toInt() ?: 0
+                        UserDetailScreen(userId)
+                    }
+                }
+
+                BackPressHandler(navController) { newItem ->
+                    if (currentDestination in allowBottomBar)
+                        navigationSelectedItem = newItem
+                }
             }
         }
     }
