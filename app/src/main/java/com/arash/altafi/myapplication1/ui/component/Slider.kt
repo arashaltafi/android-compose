@@ -71,4 +71,6 @@ fun ImageSliderScreen() {
     val listState = rememberLazyListState()
     val coroutineScope = rememberCoroutineScope()
     val context = LocalContext.current
+
+    Text("aaa")
 }
