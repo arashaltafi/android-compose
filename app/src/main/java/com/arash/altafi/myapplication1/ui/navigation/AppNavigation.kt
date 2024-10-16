@@ -1,6 +1,8 @@
 package com.arash.altafi.myapplication1.ui.navigation
 
 import android.app.Activity
+import android.content.Intent
+import android.util.Log
 import android.widget.Toast
 import androidx.compose.animation.AnimatedContentTransitionScope
 import androidx.compose.animation.AnimatedVisibility
@@ -52,13 +54,17 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavGraph.Companion.findStartDestination
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
+import androidx.navigation.navDeepLink
 import com.arash.altafi.myapplication1.R
 import com.arash.altafi.myapplication1.ui.component.BackPressHandler
 import com.arash.altafi.myapplication1.ui.component.ImageSliderScreen
+import com.arash.altafi.myapplication1.ui.screens.DeepLinkScreen
 import com.arash.altafi.myapplication1.ui.screens.HomeScreen
 import com.arash.altafi.myapplication1.ui.screens.ResponsiveScreen
 import com.arash.altafi.myapplication1.ui.screens.SplashScreen
@@ -312,6 +318,25 @@ fun AppNavigation() {
                     }
                     composable("tabLayout") {
                         TabLayoutScreen(navController)
+                    }
+                    composable(
+                        route = "deepLink",
+                        deepLinks = listOf(
+                            navDeepLink {
+                                uriPattern = "https://arashaltafi.ir/{id}"
+                                action = Intent.ACTION_VIEW
+                            }
+                        ),
+                        arguments = listOf(
+                            navArgument("id") {
+                                type = NavType.IntType
+                                defaultValue = 0
+                            }
+                        )
+                    ) { backStackEntry ->
+                        Log.i("test123321", "AppNavigation: ${backStackEntry.arguments}")
+                        val userId = backStackEntry.arguments?.getInt("id") ?: 0
+                        DeepLinkScreen(userId)
                     }
                     composable(
                         "profile",
