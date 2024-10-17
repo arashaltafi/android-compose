@@ -104,6 +104,9 @@ dependencies {
     // BottomNavigation
     implementation("com.github.PratikFagadiya:AnimatedSmoothBottomNavigation-JetpackCompose:1.1.2")
 
+    // Lottie
+    implementation("com.airbnb.android:lottie-compose:6.5.2")
+
     // Compose & Android
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)

@@ -13,12 +13,15 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.arash.altafi.myapplication1.ui.component.AlerterComponent
+import com.arash.altafi.myapplication1.ui.component.LottieComponent
 import com.arash.altafi.myapplication1.ui.component.ShowBottomSheet
 import com.arash.altafi.myapplication1.ui.component.ToastComponent
 import com.arash.altafi.myapplication1.ui.theme.CustomFont
+import com.arash.altafi.myapplication1.R
 
 @Composable
 fun HomeScreen() {
@@ -48,7 +51,26 @@ fun HomeScreen() {
             text = "Home Screen",
             fontWeight = FontWeight.Medium,
             fontSize = 24.sp,
-            fontFamily = CustomFont
+            fontFamily = CustomFont,
+            modifier = Modifier.padding(bottom = 16.dp)
+        )
+
+        LottieComponent(
+            size = DpSize(width = 64.dp, height = 64.dp),
+            loop = true,
+            lottieFile = R.raw.login
+        )
+        Spacer(Modifier.height(32.dp))
+        LottieComponent(
+            size = DpSize(width = 64.dp, height = 64.dp),
+            loop = true,
+            lottieFile = R.raw.search
+        )
+        Spacer(Modifier.height(32.dp))
+        LottieComponent(
+            size = DpSize(width = 64.dp, height = 64.dp),
+            loop = true,
+            lottieFile = R.raw.internet_on
         )
 
         OutlinedButton(
