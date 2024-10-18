@@ -39,7 +39,9 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -53,6 +55,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
@@ -74,17 +77,28 @@ import com.arash.altafi.myapplication1.ui.screens.Test
 import com.arash.altafi.myapplication1.ui.screens.UserDetailScreen
 import com.arash.altafi.myapplication1.ui.screens.UserListScreen
 import com.arash.altafi.myapplication1.ui.theme.MyApplication1Theme
+import com.arash.altafi.myapplication1.viewmodel.DataStoreViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 @Composable
 fun AppNavigation() {
     val navController = rememberNavController()
+    val dataStoreViewModel: DataStoreViewModel = hiltViewModel()
+
+    LaunchedEffect(Unit) {
+        dataStoreViewModel.getTheme()
+    }
 
     val fabVisible by remember { mutableStateOf(true) }
 
     val darkTheme: Boolean = isSystemInDarkTheme()
     var isDarkTheme by rememberSaveable { mutableStateOf(darkTheme) }
+    val theme by dataStoreViewModel.cachedTheme.observeAsState(initial = if (isDarkTheme) "dark" else "light")
+
+    LaunchedEffect(theme) {
+        isDarkTheme = theme == "dark"
+    }
 
     val context = LocalContext.current
     val activity = (context as? Activity)
@@ -179,7 +193,7 @@ fun AppNavigation() {
                                 Row {
                                     IconButton(
                                         onClick = {
-                                            isDarkTheme = !isDarkTheme
+                                            dataStoreViewModel.changeTheme()
                                         }
                                     ) {
                                         Icon(
