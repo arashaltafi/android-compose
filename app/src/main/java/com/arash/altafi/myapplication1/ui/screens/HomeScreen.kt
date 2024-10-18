@@ -122,6 +122,18 @@ fun HomeScreen(navController: NavController) {
             )
         }
 
+        Button(
+            modifier = Modifier
+                .padding(top = 22.dp),
+            onClick = {
+                navController.navigate("jwt")
+            },
+        ) {
+            Text(
+                text = "Navigate JwtScreen"
+            )
+        }
+
         AlerterComponent(showAlert) {
             showAlert = false
         }

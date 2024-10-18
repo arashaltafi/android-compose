@@ -70,6 +70,7 @@ import com.arash.altafi.myapplication1.ui.component.ImageSliderScreen
 import com.arash.altafi.myapplication1.ui.screens.DataStoreScreen
 import com.arash.altafi.myapplication1.ui.screens.DeepLinkScreen
 import com.arash.altafi.myapplication1.ui.screens.HomeScreen
+import com.arash.altafi.myapplication1.ui.screens.JwtScreen
 import com.arash.altafi.myapplication1.ui.screens.ResponsiveScreen
 import com.arash.altafi.myapplication1.ui.screens.SplashScreen
 import com.arash.altafi.myapplication1.ui.screens.TabLayoutScreen
@@ -323,6 +324,9 @@ fun AppNavigation() {
                     }
                     composable("dataStore") {
                         DataStoreScreen()
+                    }
+                    composable("jwt") {
+                        JwtScreen()
                     }
                     composable("splash") {
                         SplashScreen(navController)

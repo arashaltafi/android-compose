@@ -51,6 +51,11 @@ dependencies {
     implementation("com.squareup.retrofit2:retrofit:2.11.0")
     implementation("com.squareup.retrofit2:converter-gson:2.11.0")
 
+    // paging
+    implementation("androidx.paging:paging-runtime:3.3.2")
+    testImplementation("androidx.paging:paging-common:3.3.2")
+    implementation("androidx.paging:paging-compose:3.3.2")
+
     //OkHttp
     implementation("com.squareup.okhttp3:okhttp:5.0.0-alpha.14")
     implementation("com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.14")
@@ -118,6 +123,11 @@ dependencies {
 
     // Crypto encryption
     implementation("androidx.security:security-crypto:1.1.0-alpha06")
+
+    // JWT
+    implementation ("io.jsonwebtoken:jjwt-api:0.11.5")
+    implementation ("io.jsonwebtoken:jjwt-impl:0.11.5")
+    implementation ("io.jsonwebtoken:jjwt-jackson:0.11.5")
 
     // Compose & Android
     implementation(libs.androidx.core.ktx)
