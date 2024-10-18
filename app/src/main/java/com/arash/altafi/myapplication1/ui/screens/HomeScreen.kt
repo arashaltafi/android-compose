@@ -2,6 +2,8 @@ package com.arash.altafi.myapplication1.ui.screens
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.runtime.Composable
@@ -44,7 +46,8 @@ fun HomeScreen(navController: NavController) {
 
     Column(
         modifier = Modifier
-            .fillMaxSize(),
+            .fillMaxSize()
+            .verticalScroll(rememberScrollState()),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center,
     ) {
@@ -131,6 +134,18 @@ fun HomeScreen(navController: NavController) {
         ) {
             Text(
                 text = "Navigate JwtScreen"
+            )
+        }
+
+        Button(
+            modifier = Modifier
+                .padding(top = 22.dp),
+            onClick = {
+                navController.navigate("permission")
+            },
+        ) {
+            Text(
+                text = "Navigate PermissionScreen"
             )
         }
 
