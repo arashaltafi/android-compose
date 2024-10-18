@@ -71,6 +71,7 @@ import com.arash.altafi.myapplication1.ui.screens.DataStoreScreen
 import com.arash.altafi.myapplication1.ui.screens.DeepLinkScreen
 import com.arash.altafi.myapplication1.ui.screens.HomeScreen
 import com.arash.altafi.myapplication1.ui.screens.JwtScreen
+import com.arash.altafi.myapplication1.ui.screens.MapBoxSample
 import com.arash.altafi.myapplication1.ui.screens.PermissionScreen
 import com.arash.altafi.myapplication1.ui.screens.ResponsiveScreen
 import com.arash.altafi.myapplication1.ui.screens.SplashScreen
@@ -124,7 +125,7 @@ fun AppNavigation() {
         darkTheme = theme == "dark"
     ) {
         ModalNavigationDrawer(
-            gesturesEnabled = true,
+            gesturesEnabled = currentDestination != "mapbox",
             drawerContent = {
                 ModalDrawerSheet(
                     drawerContainerColor = colorResource(R.color.gray_200),
@@ -325,6 +326,9 @@ fun AppNavigation() {
                     }
                     composable("dataStore") {
                         DataStoreScreen()
+                    }
+                    composable("mapbox") {
+                        MapBoxSample()
                     }
                     composable("permission") {
                         PermissionScreen()

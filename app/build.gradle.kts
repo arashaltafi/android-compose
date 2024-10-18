@@ -129,6 +129,10 @@ dependencies {
     implementation ("io.jsonwebtoken:jjwt-impl:0.11.5")
     implementation ("io.jsonwebtoken:jjwt-jackson:0.11.5")
 
+    // Mapbox
+    implementation("com.mapbox.maps:android:11.7.1")
+    implementation("com.mapbox.extension:maps-compose:11.7.1")
+
     // Compose & Android
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)

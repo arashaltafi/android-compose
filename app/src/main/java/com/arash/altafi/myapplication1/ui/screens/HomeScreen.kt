@@ -149,6 +149,18 @@ fun HomeScreen(navController: NavController) {
             )
         }
 
+        Button(
+            modifier = Modifier
+                .padding(top = 22.dp),
+            onClick = {
+                navController.navigate("mapbox")
+            },
+        ) {
+            Text(
+                text = "Navigate MapBoxSample"
+            )
+        }
+
         AlerterComponent(showAlert) {
             showAlert = false
         }
