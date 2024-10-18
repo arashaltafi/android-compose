@@ -48,6 +48,29 @@ open class BaseViewModel : ViewModel() {
         }
     }
 
+    fun <T> callCache(
+        cacheCall: Flow<T>,
+        liveResult: MutableLiveData<T>? = null,
+        liveError: MutableLiveData<Boolean>? = null,
+        liveLoading: MutableLiveData<Boolean>? = null,
+        onResponse: ((T) -> Unit)? = null,
+    ) {
+        viewModelScope.launch {
+            cacheCall.onStart {
+                liveLoading?.value = true
+                liveError?.value = false
+            }.catch {
+                liveLoading?.value = false
+                liveError?.value = true
+            }.collect { response ->
+                liveResult?.value = response
+                onResponse?.invoke(response)
+                liveLoading?.value = false
+                liveError?.value = false
+            }
+        }
+    }
+
     fun <T> callDatabase(
         databaseCall: Flow<T>,
         liveResult: MutableLiveData<T>? = null,

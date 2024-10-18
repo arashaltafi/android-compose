@@ -64,6 +64,7 @@ import androidx.navigation.navDeepLink
 import com.arash.altafi.myapplication1.R
 import com.arash.altafi.myapplication1.ui.component.BackPressHandler
 import com.arash.altafi.myapplication1.ui.component.ImageSliderScreen
+import com.arash.altafi.myapplication1.ui.screens.DataStoreScreen
 import com.arash.altafi.myapplication1.ui.screens.DeepLinkScreen
 import com.arash.altafi.myapplication1.ui.screens.HomeScreen
 import com.arash.altafi.myapplication1.ui.screens.ResponsiveScreen
@@ -304,11 +305,14 @@ fun AppNavigation() {
                     composable("test") {
                         Test()
                     }
+                    composable("dataStore") {
+                        DataStoreScreen()
+                    }
                     composable("splash") {
                         SplashScreen(navController)
                     }
                     composable("home") {
-                        HomeScreen()
+                        HomeScreen(navController)
                     }
                     composable("slider") {
                         ImageSliderScreen()

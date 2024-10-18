@@ -107,6 +107,18 @@ dependencies {
     // Lottie
     implementation("com.airbnb.android:lottie-compose:6.5.2")
 
+    // DataStore
+    implementation("androidx.datastore:datastore-preferences:1.1.1")
+
+    // Tink for encryption
+    implementation("com.google.crypto.tink:tink-android:1.8.0")
+
+    // Protobuf
+    implementation("com.google.protobuf:protobuf-javalite:3.18.0")
+
+    // Crypto encryption
+    implementation("androidx.security:security-crypto:1.1.0-alpha06")
+
     // Compose & Android
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)

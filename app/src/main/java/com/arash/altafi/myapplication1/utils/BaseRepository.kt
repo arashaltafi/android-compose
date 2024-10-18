@@ -12,6 +12,11 @@ abstract class BaseRepository {
         emit(response)
     }
 
+    fun <T> callCache(cacheCall: suspend () -> T) = flow {
+        val response = cacheCall()
+        emit(response)
+    }.flowOn(Dispatchers.IO)
+
     fun <T> callDatabase(databaseCall: suspend () -> T) = flow {
         val response = databaseCall()
         emit(response)

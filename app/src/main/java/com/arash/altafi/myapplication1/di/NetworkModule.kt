@@ -1,8 +1,6 @@
 package com.arash.altafi.myapplication1.di
 
 import com.arash.altafi.myapplication1.BuildConfig
-import com.arash.altafi.myapplication1.data.api.ApiService
-import com.google.gson.Gson
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

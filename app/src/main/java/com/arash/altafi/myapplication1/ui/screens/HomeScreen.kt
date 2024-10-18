@@ -16,6 +16,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import com.arash.altafi.myapplication1.ui.component.AlerterComponent
 import com.arash.altafi.myapplication1.ui.component.LottieComponent
 import com.arash.altafi.myapplication1.ui.component.ShowBottomSheet
@@ -24,7 +25,7 @@ import com.arash.altafi.myapplication1.ui.theme.CustomFont
 import com.arash.altafi.myapplication1.R
 
 @Composable
-fun HomeScreen() {
+fun HomeScreen(navController: NavController) {
     var showBottomSheet by remember { mutableStateOf(false) }
     var showAlert by remember { mutableStateOf(false) }
     var showToast by remember { mutableStateOf(false) }
@@ -106,6 +107,18 @@ fun HomeScreen() {
         ) {
             Text(
                 text = "show alerter"
+            )
+        }
+
+        Button(
+            modifier = Modifier
+                .padding(top = 22.dp),
+            onClick = {
+                navController.navigate("dataStore")
+            },
+        ) {
+            Text(
+                text = "Navigate DataStoreScreen"
             )
         }
 
