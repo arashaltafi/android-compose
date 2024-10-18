@@ -66,6 +66,12 @@ class DataStoreViewModel @Inject constructor(
         liveError = _liveError,
         liveLoading = _liveLoading
     )
+    fun setTheme(theme: String) = callCache(
+        cacheCall = repository.setTheme(theme),
+        liveResult = null,
+        liveError = _liveError,
+        liveLoading = _liveLoading
+    )
     fun changeTheme() = callCache(
         cacheCall = repository.changeTheme(),
         liveResult = null,

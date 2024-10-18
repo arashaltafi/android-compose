@@ -43,6 +43,11 @@ class DataStoreRepository @Inject constructor(
             preferences[PreferenceKeys.THEME] ?: ""
         }
     }
+    fun setTheme(theme: String) = callCache {
+        dataStore.edit { preferences ->
+            preferences[PreferenceKeys.THEME] = theme
+        }
+    }
     fun changeTheme() = callCache {
         dataStore.edit { preferences ->
             preferences[PreferenceKeys.THEME] =

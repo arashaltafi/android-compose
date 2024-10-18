@@ -93,11 +93,13 @@ fun AppNavigation() {
     val fabVisible by remember { mutableStateOf(true) }
 
     val darkTheme: Boolean = isSystemInDarkTheme()
-    var isDarkTheme by rememberSaveable { mutableStateOf(darkTheme) }
-    val theme by dataStoreViewModel.cachedTheme.observeAsState(initial = if (isDarkTheme) "dark" else "light")
+    val theme by dataStoreViewModel.cachedTheme.observeAsState()
 
     LaunchedEffect(theme) {
-        isDarkTheme = theme == "dark"
+        val isDark = if (darkTheme) "dark" else "light"
+        if (theme == "") {
+            dataStoreViewModel.setTheme(isDark)
+        }
     }
 
     val context = LocalContext.current
@@ -117,7 +119,7 @@ fun AppNavigation() {
     val allowBottomBar = arrayOf("home", "search", "profile", "test")
 
     MyApplication1Theme(
-        darkTheme = isDarkTheme
+        darkTheme = theme == "dark"
     ) {
         ModalNavigationDrawer(
             gesturesEnabled = true,
@@ -197,8 +199,8 @@ fun AppNavigation() {
                                         }
                                     ) {
                                         Icon(
-                                            painter = painterResource(id = if (isDarkTheme) R.drawable.round_light_mode_24 else R.drawable.round_dark_mode_24),
-                                            contentDescription = if (isDarkTheme) "Switch to Light Theme" else "Switch to Dark Theme",
+                                            painter = painterResource(id = if (theme == "dark") R.drawable.round_light_mode_24 else R.drawable.round_dark_mode_24),
+                                            contentDescription = if (theme == "dark") "Switch to Light Theme" else "Switch to Dark Theme",
                                             tint = Color.White
                                         )
                                     }
@@ -313,7 +315,7 @@ fun AppNavigation() {
             ) { innerPadding ->
                 NavHost(
                     navController = navController,
-                    startDestination = "home",
+                    startDestination = "splash",
                     modifier = Modifier.padding(innerPadding)
                 ) {
                     composable("test") {
